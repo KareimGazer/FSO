@@ -1,4 +1,12 @@
 const Dashboard = ({good, neutral, bad}) => {
+    if(good === 0 && neutral === 0 && bad === 0) {
+        return (
+            <div>
+                <h1>Statistics</h1>
+                <p>No feedback given</p>
+            </div>
+        )
+    }
     return (
         <div>
             <h1>Statistics</h1>
