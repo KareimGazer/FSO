@@ -1,4 +1,4 @@
-const Person = (person) =>{
+const Person = ({person}) =>{
     return (
         <tr>
             <td>{person.name}</td>
@@ -20,9 +20,7 @@ const PeopleList = ({title, people}) => {
                     </tr>
                 </thead>
                 <tbody>
-                    {people.map(person => (
-                        <Person key={person.id} person={person}/>
-                    ))}
+                    {people.map(person => <Person key={person.id} person={person}/>)}
                 </tbody>
             </table>
         </>
