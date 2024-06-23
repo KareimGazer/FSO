@@ -1,13 +1,14 @@
-const Person = ({person}) =>{
+const Person = ({person, onDelete}) =>{
     return (
         <tr>
             <td>{person.name}</td>
             <td>{person.number}</td>
+            <td><button onClick={() => onDelete(person.id)}>delete</button></td>
         </tr>
     )
 }
 
-const PeopleList = ({title, people}) => {
+const PeopleList = ({title, people, onDelete}) => {
     return (
         <>
             <h1>{title}</h1>
@@ -20,7 +21,7 @@ const PeopleList = ({title, people}) => {
                     </tr>
                 </thead>
                 <tbody>
-                    {people.map(person => <Person key={person.id} person={person}/>)}
+                    {people.map(person => <Person key={person.id} person={person} onDelete={onDelete}/>)}
                 </tbody>
             </table>
         </>

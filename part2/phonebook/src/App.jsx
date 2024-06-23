@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useEffect } from 'react'
-import contacts from './services/contacts'
+import contacts from './services/persons'
 import Dashboard from './Dashboard'
 import Filter from './Filter'
 import PersonForm from './PersonForm'
@@ -34,6 +34,17 @@ const App = () => {
     })
   }
 
+  const handelDelete = (id) => {
+    const removedPerson = persons.find(person => person.id === id)
+    if(window.confirm(`Delete ${removedPerson.name}?`)) {
+      contacts.remove(id).then(() => {
+        // the response data is not needed since the contact has been deleted
+        // and only the filter will be appllied when the operation is successful
+        setPersons(persons.filter(person => person.id !== id))
+      })
+    }
+  }
+
   const filteredPersons = persons.filter(person => person.name.toLowerCase().includes(searchTerm.toLowerCase()))
 
   useEffect(() => {
@@ -50,7 +61,7 @@ const App = () => {
         <Filter term={searchTerm} onFilter={setSearchTerm}></Filter>
         <PersonForm newName={newName} onNameChange={setNewName} newNumber={newNumber} onNumberChange={setNewNumber} onSubmit={handelSubmit}/>
       </Dashboard>
-      <PeopleList title={'Your List of Contacts'} people={filteredPersons}/>
+      <PeopleList title={'Your List of Contacts'} people={filteredPersons} onDelete={handelDelete}/>
     </>
   )
 }
