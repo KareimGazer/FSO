@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useEffect } from 'react'
-import axios from 'axios'
+import contacts from './services/contacts'
 import Dashboard from './Dashboard'
 import Filter from './Filter'
 import PersonForm from './PersonForm'
@@ -39,9 +39,10 @@ const App = () => {
   const filteredPersons = persons.filter(person => person.name.toLowerCase().includes(searchTerm.toLowerCase()))
 
   useEffect(() => {
-    axios.get('http://localhost:3001/persons')
-        .then(response => {
-        setPersons(response.data)
+    contacts
+      .getAll()
+      .then(initialPersons => {
+        setPersons(initialPersons)
       })
   }, []);
 
