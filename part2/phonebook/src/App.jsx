@@ -26,14 +26,12 @@ const App = () => {
       alert(`${newNumber} is already assigned to "${persons.filter(person => person.number === newNumber)[0].name}"`)
       return
     }
-    const person = {
-      id: persons.length + 1,
-      name: newName,
-      number: newNumber
-    }
-    setPersons(persons.concat(person))
-    setNewName('')
-    setNewNumber('')
+    const person = {name: newName,number: newNumber}
+    contacts.create(person).then((addedPerson) => {
+      setPersons(persons.concat(addedPerson))
+      setNewName('')
+      setNewNumber('')
+    })
   }
 
   const filteredPersons = persons.filter(person => person.name.toLowerCase().includes(searchTerm.toLowerCase()))
