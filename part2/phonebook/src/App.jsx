@@ -19,11 +19,19 @@ const App = () => {
       return
     }
     if(persons.find(person => person.name.toLowerCase() === newName.toLowerCase())) {
-      alert(`${newName} is already added to phonebook`)
+      if(window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)) {
+        const person = persons.find(person => person.name.toLowerCase() === newName.toLowerCase())
+        const updatedPerson = {...person, number: newNumber}
+        contacts.update(person.id, updatedPerson).then((updatedPerson) => {
+          setPersons(persons.map(person => person.id !== updatedPerson.id ? person : updatedPerson))
+          setNewName('')
+          setNewNumber('')
+        })
+      }
       return
     }
     if(persons.find(person => person.number === newNumber)) {
-      alert(`${newNumber} is already assigned to "${persons.filter(person => person.number === newNumber)[0].name}"`)
+      alert(`${newNumber} is already added to phonebook`)
       return
     }
     const person = {name: newName,number: newNumber}
