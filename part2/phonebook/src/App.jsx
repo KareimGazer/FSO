@@ -14,10 +14,17 @@ const App = () => {
   const [searchTerm, setSearchTerm] = useState('')
   const [message, setMessage] = useState(null)
 
+  const showNotification = (message, time_ms = 5000) => {
+    setMessage(message)
+    setTimeout(() => {
+      setMessage(null)
+    }, time_ms)
+  }
+
   const handelSubmit = (event) => {
     event.preventDefault()
     if(!newName || !newNumber) {
-      setMessage('Error: Please enter a name and number')
+      showNotification('Error: Please enter a name and number')
       return
     }
     if(persons.find(person => person.name.toLowerCase() === newName.toLowerCase())) {
@@ -28,26 +35,23 @@ const App = () => {
           setPersons(persons.map(person => person.id !== updatedPerson.id ? person : updatedPerson))
           setNewName('')
           setNewNumber('')
-          setMessage(`Updated ${updatedPerson.name}'s number`)
+          showNotification(`Updated ${updatedPerson.name}'s number`)
         }).catch(error => {
-          setMessage(`Error: Information of ${person.name} has already been removed from server`)
-          setTimeout(() => {
-            setMessage(null)
-          }, 5000)
+          showNotification(`Error: Information of ${person.name} has already been removed from server`)
         })
       }
       return
     }
     if(persons.find(person => person.number === newNumber)) {
-      setMessage(`Error: ${newNumber} is already added to phonebook`)
+      showNotification(`Error: ${newNumber} is already added to phonebook`)
       return
     }
-    const person = {name: newName,number: newNumber}
+    const person = {name: newName, number: newNumber}
     contacts.create(person).then((addedPerson) => {
       setPersons(persons.concat(addedPerson))
       setNewName('')
       setNewNumber('')
-      setMessage(`Added ${addedPerson.name}`)
+      showNotification(`Added ${addedPerson.name}`)
     })
   }
 
@@ -58,12 +62,9 @@ const App = () => {
         // the response data is not needed since the contact has been deleted
         // and only the filter will be appllied when the operation is successful
         setPersons(persons.filter(person => person.id !== id))
-        setMessage(`Deleted ${removedPerson.name}`)
+        showNotification(`Deleted ${removedPerson.name}`)
       }).catch(error => {
-        setMessage(`Error: Information of ${removedPerson.name} has already been removed from server`)
-        setTimeout(() => {
-          setMessage(null)
-        }, 5000)
+        showNotification(`Error: Information of ${removedPerson.name} has already been removed from server`)
       })
     }
   }
